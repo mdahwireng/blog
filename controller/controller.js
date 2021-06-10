@@ -1,0 +1,65 @@
+const model = require("../models/model");
+const path = require('path');
+const bcrypt = require('bcrypt');
+
+exports.home = async(req, res) => {
+    const blogposts = await model.BlogPost.find({});
+    res.render('index', { blogposts });
+}
+
+exports.getPost = async(req, res) => {
+    blogpost = await model.BlogPost.findById(req.params.id);
+    res.render('post', { blogpost });
+}
+
+exports.newPost = (req, res) => {
+    res.render('create');
+}
+
+exports.storePost = (req, res) => {
+    let image = req.files.image
+    image.mv(path.resolve(__dirname, '..', 'public/img', image.name), async(error) => {
+        await model.BlogPost.create({
+            ...req.body,
+            image: '/img/' + image.name
+        });
+        res.redirect('/')
+    });
+}
+
+exports.newUser = (req, res) => {
+    res.render('register');
+}
+
+exports.storeUser = async(req, res) => {
+    await model.User.create(req.body, (error, user) => {
+        if (error) {
+            return res.redirect('/auth/register');
+        }
+        res.redirect('/');
+    })
+}
+
+exports.login = (req, res) => {
+    res.render("login");
+}
+
+exports.loginUser = (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    model.User.findOne({ username: username }, (error, user) => {
+        if (user) {
+            bcrypt.compare(password, user.password, (error, same) => {
+                if (same) {
+                    // store user session
+                    res.redirect('/');
+                } else {
+                    res.redirect('/auth/login');
+                }
+            })
+        } else {
+            res.redirect('auth/login');
+        }
+    })
+}

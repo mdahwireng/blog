@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('layouts/header.ejs') -%>
+
+    <body>
+        <!-- Navigation-->
+        <%- include('layouts/navbar.ejs') -%>
+            <!-- Page Header-->
+            <header class="masthead" style="background-image: url('/img/contact-bg.jpg')">
+                <div class="container position-relative px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-7">
+                            <div class="page-heading">
+                                <h1>Create New Post</h1>
+                                <span class="subheading">Have a post? Post it here.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Main Content-->
+            <main class="mb-4">
+                <div class="container px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-7">
+                            <p>Fill out the form below to send post.</p>
+                            <div class="my-5">
+                                <form action="/posts/store" method="POST" enctype="multipart/form-data">
+                                    <div class="form-floating">
+                                        <input class="form-control" id="inputTitle" type="text" placeholder="Title" name="title" />
+                                        <label for="inputTitle">Title</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" id="inputMessage" style="height: 12rem" name="body"></textarea>
+                                        <label for="inputMessage">Description</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input class="form-control" id="inputImage" type="file" placeholder="Title" name="image" />
+                                        <label for="inputImage">Image</label>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary text-uppercase" type="submit">Send</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- Footer-->
+            <%- include('layouts/footer.ejs') -%>
+                <%- include('layouts/scripts.ejs') -%>
+    </body>
+
+</html>
