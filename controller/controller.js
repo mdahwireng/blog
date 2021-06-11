@@ -13,7 +13,10 @@ exports.getPost = async(req, res) => {
 }
 
 exports.newPost = (req, res) => {
-    res.render('create');
+    if (req.session.userId) {
+        res.render('create');
+    }
+    //res.redirect('/auth/login');
 }
 
 exports.storePost = (req, res) => {
@@ -52,7 +55,7 @@ exports.loginUser = (req, res) => {
         if (user) {
             bcrypt.compare(password, user.password, (error, same) => {
                 if (same) {
-                    // store user session
+                    req.session.userId = user._id;
                     res.redirect('/');
                 } else {
                     res.redirect('/auth/login');

@@ -15,7 +15,7 @@ app.use(expressSession({
 }));
 app.use(express.static('public'));
 app.use(fileUpload());
-app.use('/posts/store', middleware.validateMiddleWare);
+//app.use('/posts/store', middleware.validateMiddleware);
 app.set('view engine', 'ejs');
 
 app.listen(4000, () => {
@@ -26,9 +26,9 @@ app.get('/', controller.home);
 
 app.get('/post/:id', controller.getPost);
 
-app.get('/posts/new', controller.newPost);
+app.get('/posts/new', middleware.authMiddleware, controller.newPost);
 
-app.post('/posts/store', controller.storePost);
+app.post('/posts/store', middleware.validateMiddleware, middleware.authMiddleware, controller.storePost);
 
 app.get('/auth/register', controller.newUser);
 
