@@ -47,6 +47,12 @@ exports.login = (req, res) => {
     res.render("login");
 }
 
+exports.logout = (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+}
+
 exports.loginUser = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;

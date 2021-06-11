@@ -15,6 +15,14 @@ app.use(expressSession({
 }));
 app.use(express.static('public'));
 app.use(fileUpload());
+
+global.loggedIn = null
+
+app.use('*', (req, res, next) => {
+    loggedIn = req.session.userId;
+    next()
+});
+
 //app.use('/posts/store', middleware.validateMiddleware);
 app.set('view engine', 'ejs');
 
@@ -35,5 +43,7 @@ app.get('/auth/register', middleware.redirectIfAuthenticatedMiddleware, controll
 app.post('/users/register', middleware.redirectIfAuthenticatedMiddleware, controller.storeUser);
 
 app.get('/auth/login', middleware.redirectIfAuthenticatedMiddleware, controller.login);
+
+app.get('/auth/logout', controller.logout);
 
 app.post('/users/login', middleware.redirectIfAuthenticatedMiddleware, controller.loginUser);
