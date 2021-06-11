@@ -30,10 +30,10 @@ app.get('/posts/new', middleware.authMiddleware, controller.newPost);
 
 app.post('/posts/store', middleware.validateMiddleware, middleware.authMiddleware, controller.storePost);
 
-app.get('/auth/register', controller.newUser);
+app.get('/auth/register', middleware.redirectIfAuthenticatedMiddleware, controller.newUser);
 
-app.post('/users/register', controller.storeUser);
+app.post('/users/register', middleware.redirectIfAuthenticatedMiddleware, controller.storeUser);
 
-app.get('/auth/login', controller.login);
+app.get('/auth/login', middleware.redirectIfAuthenticatedMiddleware, controller.login);
 
-app.post('/users/login', controller.loginUser);
+app.post('/users/login', middleware.redirectIfAuthenticatedMiddleware, controller.loginUser);

@@ -15,3 +15,10 @@ exports.authMiddleware = (req, res, next) => {
         next()
     })
 }
+
+exports.redirectIfAuthenticatedMiddleware = (req, res, next) => {
+    if (req.session.userId) {
+        return res.redirect('/');
+    }
+    next();
+}
