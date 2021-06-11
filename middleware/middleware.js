@@ -10,7 +10,8 @@ exports.validateMiddleware = (req, res, next) => {
 exports.authMiddleware = (req, res, next) => {
     model.User.findById(req.session.userId, (error, user) => {
         if (error || !user)
-            res.redirect('/auth/login');
+            return res.redirect('/auth/login');
+
         next()
     })
 }
