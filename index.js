@@ -47,3 +47,7 @@ app.get('/auth/login', middleware.redirectIfAuthenticatedMiddleware, controller.
 app.get('/auth/logout', controller.logout);
 
 app.post('/users/login', middleware.redirectIfAuthenticatedMiddleware, controller.loginUser);
+
+app.use((req, res) => {
+    res.render('notfound');
+});
