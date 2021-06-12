@@ -5,16 +5,18 @@ const fileUpload = require('express-fileupload');
 const controller = require('./controller/controller');
 const middleware = require('./middleware/middleware');
 const expressSession = require('express-session');
+const flash = require('connect-flash');
 
 mongoose.connect('mongodb://localhost/my_database', { useNewUrlParser: true });
 app = new express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(expressSession({
-    secret: 'keyboard cat'
+    secret: 'oneWord'
 }));
 app.use(express.static('public'));
 app.use(fileUpload());
+app.use(flash());
 
 global.loggedIn = null
 

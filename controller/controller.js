@@ -32,7 +32,7 @@ exports.storePost = (req, res) => {
 
 exports.newUser = (req, res) => {
     res.render('register', {
-        errors: req.session.validationErrors
+        errors: req.flash().validationErrors
     });
 }
 
@@ -40,7 +40,7 @@ exports.storeUser = async(req, res) => {
     await model.User.create(req.body, (error, user) => {
         if (error) {
             const validationErrors = Object.keys(error.errors).map(i => error.errors[i].message);
-            req.session.validationErrors = validationErrors;
+            req.flash('validationErrors', validationErrors);
             return res.redirect('/auth/register');
         }
         res.redirect('/');
