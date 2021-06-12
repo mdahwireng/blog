@@ -31,8 +31,20 @@ exports.storePost = (req, res) => {
 }
 
 exports.newUser = (req, res) => {
+    var username = ""
+    var password = ""
+    const flashContent = req.flash()
+    const data = flashContent.data
+
+    if (typeof data != 'undefined') {
+        username = data[0].username
+        password = data[0].password
+    }
+
     res.render('register', {
-        errors: req.flash().validationErrors
+        errors: flashContent.validationErrors,
+        username: username,
+        password: password
     });
 }
 
@@ -40,7 +52,11 @@ exports.storeUser = async(req, res) => {
     await model.User.create(req.body, (error, user) => {
         if (error) {
             const validationErrors = Object.keys(error.errors).map(i => error.errors[i].message);
+            //console.log('storeUser', validationErrors)
             req.flash('validationErrors', validationErrors);
+            if (res.body != '') {
+                req.flash('data', req.body);
+            }
             return res.redirect('/auth/register');
         }
         res.redirect('/');
