@@ -10,7 +10,6 @@ exports.validateMiddleware = (req, res, next) => {
 exports.authMiddleware = (req, res, next) => {
     model.User.findById(req.session.userId, (error, user) => {
         if (error || !user) {
-            console.log('auth encounted error...')
             return res.redirect('/auth/login');
         }
 

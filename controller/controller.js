@@ -38,14 +38,14 @@ exports.storePost = (req, res) => {
     if (req.files != null) {
         var image = req.files.image;
         var imageDir = '/img/' + image.name
-        image.mv(path.resolve(__dirname, '..', 'public/img', image.name), (error) => {
-            if (error) {
-                errors.push(...error);
-            }
-        });
+        if (req.files != null && req.body.title != "" && req.body != "") {
+            image.mv(path.resolve(__dirname, '..', 'public/img', image.name), (error) => {
+                if (error) {
+                    errors.push(...error);
+                }
+            });
+        }
     }
-
-
 
     model.BlogPost.create({
             ...req.body,
@@ -57,7 +57,6 @@ exports.storePost = (req, res) => {
                 errors.push(...validationErrors);
                 req.flash('validationErrors', errors);
                 if (req.body != '') {
-                    if (req.files != null) { req.body.image = req.files.image }
                     req.flash('data', req.body);
                 }
                 return res.redirect('/posts/new');

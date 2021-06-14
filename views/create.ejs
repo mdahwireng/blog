@@ -37,15 +37,15 @@
                                             <% } %>
                                                 <form action="/posts/store" method="POST" enctype="multipart/form-data">
                                                     <div class="form-floating">
-                                                        <input class="form-control" id="inputTitle" type="text" placeholder="Title" name="title" />
+                                                        <input class="form-control" id="inputTitle" type="text" placeholder="Title" name="title" value="<%= title %>" />
                                                         <label for="inputTitle">Title</label>
                                                     </div>
                                                     <div class="form-floating">
-                                                        <textarea class="form-control" id="inputMessage" style="height: 12rem" name="body"></textarea>
-                                                        <label for="inputMessage">Description</label>
+                                                        <textarea class="form-control" id="inputMessage" style="height: 12rem" name="body" value="<%= body %>"></textarea>
+                                                        <label for=" inputMessage ">Description</label>
                                                     </div>
-                                                    <div class="form-floating">
-                                                        <input class="form-control" id="inputImage" type="file" placeholder="Title" name="image" />
+                                                    <div class="form-floating ">
+                                                        <input class="form-control " id="inputImage " type="file" placeholder="image" name="image" />
                                                         <label for="inputImage">Image</label>
                                                     </div>
                                                     <br />
