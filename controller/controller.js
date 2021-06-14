@@ -14,20 +14,59 @@ exports.getPost = async(req, res) => {
 
 exports.newPost = (req, res) => {
     if (req.session.userId) {
-        res.render('create');
+        var title = ""
+        var body = ""
+        const flashContent = req.flash()
+        const data = flashContent.data
+
+        if (typeof data != 'undefined') {
+            title = data[0].title
+            body = data[0].body
+        }
+        res.render('create', {
+            errors: flashContent.validationErrors,
+            title: title,
+            body: body
+        });
     }
     //res.redirect('/auth/login');
 }
 
 exports.storePost = (req, res) => {
-    let image = req.files.image
-    image.mv(path.resolve(__dirname, '..', 'public/img', image.name), async(error) => {
-        await model.BlogPost.create({
-            ...req.body,
-            image: '/img/' + image.name
+    const errors = []
+    var imageDir = ""
+    if (req.files != null) {
+        var image = req.files.image;
+        var imageDir = '/img/' + image.name
+        image.mv(path.resolve(__dirname, '..', 'public/img', image.name), (error) => {
+            if (error) {
+                errors.push(...error);
+            }
         });
-        res.redirect('/')
-    });
+    }
+
+
+
+    model.BlogPost.create({
+            ...req.body,
+            image: imageDir
+        },
+        (error, blogpost) => {
+            if (error) {
+                const validationErrors = Object.keys(error.errors).map(i => error.errors[i].message);
+                errors.push(...validationErrors);
+                req.flash('validationErrors', errors);
+                if (req.body != '') {
+                    if (req.files != null) { req.body.image = req.files.image }
+                    req.flash('data', req.body);
+                }
+                return res.redirect('/posts/new');
+
+            }
+            res.redirect('/')
+        }
+    )
+
 }
 
 exports.newUser = (req, res) => {
@@ -52,9 +91,8 @@ exports.storeUser = async(req, res) => {
     await model.User.create(req.body, (error, user) => {
         if (error) {
             const validationErrors = Object.keys(error.errors).map(i => error.errors[i].message);
-            //console.log('storeUser', validationErrors)
             req.flash('validationErrors', validationErrors);
-            if (res.body != '') {
+            if (req.body != '') {
                 req.flash('data', req.body);
             }
             return res.redirect('/auth/register');
@@ -88,7 +126,7 @@ exports.loginUser = (req, res) => {
                 }
             })
         } else {
-            res.redirect('auth/login');
+            res.redirect('/auth/login');
         }
     })
 }

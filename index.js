@@ -38,7 +38,7 @@ app.get('/post/:id', controller.getPost);
 
 app.get('/posts/new', middleware.authMiddleware, controller.newPost);
 
-app.post('/posts/store', middleware.validateMiddleware, middleware.authMiddleware, controller.storePost);
+app.post('/posts/store', middleware.authMiddleware, controller.storePost);
 
 app.get('/auth/register', middleware.redirectIfAuthenticatedMiddleware, controller.newUser);
 

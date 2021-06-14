@@ -4,14 +4,23 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const BlogPostSchema = new Schema({
-    title: String,
-    body: String,
+    title: {
+        type: String,
+        required: [true, "Please provide title"]
+    },
+    body: {
+        type: String,
+        required: [true, "Please provide description"]
+    },
     username: String,
     datePosted: { /* can declare property type with an object like this because we need 'default' */
         type: Date,
         default: new Date()
     },
-    image: String
+    image: {
+        type: String,
+        required: [true, "Please provide image"]
+    }
 });
 
 exports.BlogPost = mongoose.model('BlogPost', BlogPostSchema);
