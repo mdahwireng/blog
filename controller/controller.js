@@ -101,7 +101,22 @@ exports.storeUser = async(req, res) => {
 }
 
 exports.login = (req, res) => {
-    res.render("login");
+    errors = []
+    username = ''
+    password = ''
+
+    const flashContent = req.flash()
+    if (flashContent != null) {
+        errors = flashContent.validationErrors
+        username = flashContent.data[0].username
+        password = flashContent.data[0].password
+    }
+
+    res.render("login", {
+        errors: errors,
+        username: username,
+        password: password
+    });
 }
 
 exports.logout = (req, res) => {
@@ -113,6 +128,7 @@ exports.logout = (req, res) => {
 exports.loginUser = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const errors = []
 
     model.User.findOne({ username: username }, (error, user) => {
         if (user) {
@@ -121,10 +137,16 @@ exports.loginUser = (req, res) => {
                     req.session.userId = user._id;
                     res.redirect('/');
                 } else {
+                    errors.push('Password incorrect')
+                    req.flash('validationErrors', errors);
+                    req.flash('data', req.body);
                     res.redirect('/auth/login');
                 }
             })
         } else {
+            errors.push('Username not found')
+            req.flash('validationErrors', errors);
+            req.flash('data', req.body);
             res.redirect('/auth/login');
         }
     })

@@ -26,18 +26,27 @@
                         <div class="col-md-10 col-lg-8 col-xl-7">
                             <p>Fill out the form login.</p>
                             <div class="my-5">
-                                <form action="/users/login" method="POST" enctype="multipart/form-data">
-                                    <div class="form-floating">
-                                        <input class="form-control" id="inputUserName" type="text" placeholder="User Name" name="username" />
-                                        <label for="inputUserName">User Name</label>
-                                    </div>
-                                    <div class="form-floating">
-                                        <input class="form-control" id="inputPassword" type="password" placeholder="User Name" name="password" />
-                                        <label for="inputPassword">Password</label>
-                                    </div>
-                                    <br />
-                                    <button class="btn btn-primary text-uppercase" type="submit">Login</button>
-                                </form>
+                                <% if(errors != null && errors.length > 0){ %>
+                                    <ul class="list-group"></ul>
+                                    <% for (var i = 0; i < errors.length; i++) { %>
+                                        <li class="list-group-item list-group-item-danger">
+                                            <%= errors[i] %>
+                                        </li>
+                                        <% } %>
+                                            </ul>
+                                            <% } %>
+                                                <form action="/users/login" method="POST" enctype="multipart/form-data">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" id="inputUserName" type="text" placeholder="User Name" name="username" value="<%= username %>" required/>
+                                                        <label for="inputUserName">User Name</label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" id="inputPassword" type="password" placeholder="User Name" name="password" value="<%= password %>" required />
+                                                        <label for="inputPassword">Password</label>
+                                                    </div>
+                                                    <br />
+                                                    <button class="btn btn-primary text-uppercase" type="submit">Login</button>
+                                                </form>
                             </div>
                         </div>
                     </div>
