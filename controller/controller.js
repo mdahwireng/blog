@@ -3,12 +3,12 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 
 exports.home = async(req, res) => {
-    const blogposts = await model.BlogPost.find({});
+    const blogposts = await model.BlogPost.find({}).populate('userid');
     res.render('index', { blogposts });
 }
 
 exports.getPost = async(req, res) => {
-    blogpost = await model.BlogPost.findById(req.params.id);
+    blogpost = await (await model.BlogPost.findById(req.params.id)).populate('userid');
     res.render('post', { blogpost });
 }
 
@@ -49,7 +49,8 @@ exports.storePost = (req, res) => {
 
     model.BlogPost.create({
             ...req.body,
-            image: imageDir
+            image: imageDir,
+            userid: req.session.userId
         },
         (error, blogpost) => {
             if (error) {
@@ -105,8 +106,8 @@ exports.login = (req, res) => {
     username = ''
     password = ''
 
-    const flashContent = req.flash()
-    if (flashContent != null) {
+    const flashContent = req.flash();
+    if (Object.keys(flashContent).length > 0) {
         errors = flashContent.validationErrors
         username = flashContent.data[0].username
         password = flashContent.data[0].password
