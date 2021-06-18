@@ -5,7 +5,11 @@ const fileUpload = require('express-fileupload');
 const expressSession = require('express-session');
 const flash = require('connect-flash');
 const router = require('./route/router');
+const dotenv = require('dotenv');
 
+dotenv.config({ path: 'config.env' });
+
+const PORT = process.env.PORT || 8080;
 mongoose.connect('mongodb://localhost/my_database', { useNewUrlParser: true });
 app = new express();
 app.use(express.urlencoded({ extended: true }));
@@ -27,8 +31,8 @@ app.use('*', (req, res, next) => {
 //app.use('/posts/store', middleware.validateMiddleware);
 app.set('view engine', 'ejs');
 
-app.listen(4000, () => {
-    console.log(`App is running on http://localhost:4000`);
+app.listen(PORT, () => {
+    console.log(`App is running on http://localhost:${PORT}`);
 });
 
 app.use('/', router);
