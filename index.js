@@ -6,11 +6,12 @@ const expressSession = require('express-session');
 const flash = require('connect-flash');
 const router = require('./route/router');
 const dotenv = require('dotenv');
+const connectDB = require('./database/connection')
 
 dotenv.config({ path: 'config.env' });
-
 const PORT = process.env.PORT || 8080;
-mongoose.connect('mongodb://localhost/my_database', { useNewUrlParser: true });
+// database connection
+connectDB();
 app = new express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
