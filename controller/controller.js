@@ -8,7 +8,7 @@ exports.home = async(req, res) => {
 }
 
 exports.getPost = async(req, res) => {
-    blogpost = await (await model.BlogPost.findById(req.params.id)).populate('userid');
+    blogpost = await model.BlogPost.findById(req.params.id).populate('userid');
     res.render('post', { blogpost });
 }
 
